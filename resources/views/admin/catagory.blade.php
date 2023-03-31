@@ -20,8 +20,12 @@
             margin: auto;
             width: 50%;
             text-align: center;
-            margin-top: 30px;
-            border: 3px solid white;
+            margin-top: 40px;
+            border: 2px solid white;
+        }
+
+        .th_color{
+            background: darkgray;
         }
     </style>
 </head>
@@ -58,7 +62,7 @@
 
 
             <table class="center">
-                <tr>
+                <tr class="th_color">
                     <td>Catagory Name</td>
                     <td>Action</td>
                 </tr>

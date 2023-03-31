@@ -54,7 +54,7 @@
                         Add Product
                     </h1>
 
-                    <form action="{{url('/add_product')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{url('/add_product')}}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                     <div class="div_design">
