@@ -18,14 +18,22 @@ class HomeController extends Controller
         }
         else
         {
-            return view('home.userpage');
+//            return view('home.userpage');
+            $product=Product::paginate(10);
+            return view('home.userpage',compact('product'));
         }
     }
 
     public function index()
     {
-        $product=Product::all();
+        $product=Product::paginate(10);
         return view('home.userpage',compact('product'));
+    }
+
+    public function product_details($id)
+    {
+        $product=product::find($id);
+        return view('home.product_details',compact('product'));
     }
 
 
