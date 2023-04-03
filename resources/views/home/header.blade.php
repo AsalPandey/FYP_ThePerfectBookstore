@@ -1,4 +1,5 @@
 <header class="header_section">
+
     <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
             <a class="navbar-brand" href="{{url('/')}}"><img width="250" src="home/images/logo.png" alt="#" /></a>
@@ -25,6 +26,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('show_cart')}}"> Cart</a>
                     </li>
 
                     <form class="form-inline">
