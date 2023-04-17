@@ -1,13 +1,11 @@
 <section class="product_section layout_padding">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>
-                Our <span>products</span>
-            </h2>
+
             <br><br>
 
             <div>
-                <form action="{{url('product_search')}}" method="GET">
+                <form action="{{url('rproduct_search')}}" method="GET">
                     @csrf
                     <input style="width: 500px;" type="text" name="search" placeholder="Search for Something">
                     <input type="submit" value="search">
@@ -24,16 +22,31 @@
 
 
         <div class="row">
-{{--            foreach loop for product--}}
-            @foreach($product as $products)
+            {{--            foreach loop for product--}}
+            @foreach($rproduct as $rproducts)
                 <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="box">
                         <div class="option_container">
                             <div class="options">
-                                <a href="{{url('product_details',$products->id)}}" class="option1">
+
+                                <a href="{{url('rproduct_details',$rproducts->id)}}" class="option1">
                                     Product Details
                                 </a>
-                                <form action="{{url('add_cart',$products->id)}}" method="POST">
+
+                                <form action="{{url('r_add_cartrent',$rproducts->id)}}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="number" name="month" value="1" min="1" style="width: 100px;">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="submit" value="Rent for month">
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                                <form action="{{url('r_add_cart',$rproducts->id)}}" method="POST">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-4">
@@ -48,31 +61,31 @@
                             </div>
                         </div>
                         <div class="img-box">
-                            <img src="product/{{$products->image}}" alt="">
+                            <img src="product/{{$rproducts->image}}" alt="">
                         </div>
                         <div class="detail-box">
                             <h5>
-                                {{$products->title}}
+                                {{$rproducts->title}}
                             </h5>
 
-                            @if($products->discount_price != null)
-                                <h6 style="color: red">
-                                    New Price
+                            @if($rproducts->discount_price != null)
+                                <h6 style="color: blue">
+                                    Price
                                     <br>
-                                    Rs:{{$products->price - $products->discount_price}}
-                                </h6>
-                                <h6 style="text-decoration: line-through; color: blue">
-                                    Old Price
-                                    <br>
-                                    Rs:{{$products->price}}
+                                    Rs:{{$rproducts->secondhand_price - $rproducts->discount_price}}
                                 </h6>
                             @else
                                 <h6 style="color: blue">
                                     Price
                                     <br>
-                                    Rs:{{$products->price}}
+                                    Rs:{{$rproducts->secondhand_price}}
                                 </h6>
                             @endif
+                                <h6 style=" color: blue">
+                                    rent
+                                    <br>
+                                    Rs:{{$rproducts->rent_price}}
+                                </h6>
 
                         </div>
                     </div>
@@ -81,7 +94,7 @@
 
             <span style="padding-top: 20px">
 
-{!!$product->withQueryString()->links('pagination::bootstrap-5')!!}
+{!!$rproduct->withQueryString()->links('pagination::bootstrap-5')!!}
 
             </span>
         </div>

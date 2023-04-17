@@ -1,13 +1,9 @@
 <section class="product_section layout_padding">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>
-                Our <span>products</span>
-            </h2>
-            <br><br>
 
             <div>
-                <form action="{{url('product_search')}}" method="GET">
+                <form action="{{url('search_product')}}" method="GET">
                     @csrf
                     <input style="width: 500px;" type="text" name="search" placeholder="Search for Something">
                     <input type="submit" value="search">
@@ -22,9 +18,7 @@
             </div>
         @endif
 
-
         <div class="row">
-{{--            foreach loop for product--}}
             @foreach($product as $products)
                 <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="box">
@@ -55,23 +49,28 @@
                                 {{$products->title}}
                             </h5>
 
-                            @if($products->discount_price != null)
+                            @if($products->discount_price!=null)
+
                                 <h6 style="color: red">
                                     New Price
                                     <br>
-                                    Rs:{{$products->price - $products->discount_price}}
+                                    Rs:{{$products->discount_price}}
                                 </h6>
+
                                 <h6 style="text-decoration: line-through; color: blue">
-                                    Old Price
+                                    Price
                                     <br>
                                     Rs:{{$products->price}}
                                 </h6>
+
                             @else
+
                                 <h6 style="color: blue">
                                     Price
                                     <br>
                                     Rs:{{$products->price}}
                                 </h6>
+
                             @endif
 
                         </div>
@@ -85,8 +84,5 @@
 
             </span>
         </div>
-
-
     </div>
 </section>
-

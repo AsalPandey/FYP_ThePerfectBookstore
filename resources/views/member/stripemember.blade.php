@@ -1,5 +1,3 @@
-stripe.blade.php
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +32,7 @@ stripe.blade.php
 
     <div class="container">
 
-        <h1 style="text-align: center; font-size: 24px; padding-bottom: 20px;">Pay Using Card - Total amount: Rs{{$totalprice}}</h1>
+        <h1 style="text-align: center; font-size: 24px; padding-bottom: 20px;">Pay Using Card - Total amount: Rs1000</h1>
 
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -53,7 +51,7 @@ stripe.blade.php
 
                         <form
                             role="form"
-                            action="{{ route('stripe.post',$totalprice) }}"
+                            action="{{ route('postmembership')}}"
                             method="post"
                             class="require-validation"
                             data-cc-on-file="false"

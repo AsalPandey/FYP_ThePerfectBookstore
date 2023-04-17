@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -14,26 +15,53 @@ use Stripe;
 
 class HomeController extends Controller
 {
+
+
+    public function index()
+    {
+        if (Auth::check()) {
+            return $this->redirect();
+        } else {
+            $product = Product::paginate(3);
+            return view('home.userpage', compact('product'));
+        }
+    }
+
+
     public function redirect()
     {
         $usertype=Auth::user()->usertype;
+
+        //admin
         if($usertype=='1')
         {
             return view('admin.home');
         }
-        else
+        //member
+        elseif($usertype=='2')
+        {
+            //            return view('member.userpage');
+            $product=Product::paginate(10);
+            return view('home.userpage',compact('product'));
+        }
+        elseif($usertype=='3')
+        {
+            //            return view('member.userpage');
+            $users = User::all();
+            return view('admin.superhome', compact('users'));
+        }
+        //user-not member
+        elseif($usertype=='0')
         {
 //            return view('home.userpage');
             $product=Product::paginate(10);
             return view('home.userpage',compact('product'));
         }
+
+
     }
 
-    public function index()
-    {
-        $product=Product::paginate(10);
-        return view('home.userpage',compact('product'));
-    }
+
 
     public function product_details($id)
     {
@@ -47,34 +75,57 @@ class HomeController extends Controller
         {
 //            getting user data
             $user=Auth::user();
+            $userid=$user->id;
 //            dd($user);
 //            getting product data
             $product=product::find($id);
 //            dd($product);
+            $product_exist_id=cart::where('Product_id','=',$id)->where('user_id','=',$userid)->get('id')->first();
 
-            $cart=new cart;
-            $cart->name=$user->name;
-            $cart->email=$user->email;
-            $cart->phone=$user->phone;
-            $cart->address=$user->address;
-            $cart->user_id=$user->id;
-
-            $cart->Product_title=$product->title;
-            if($product->discount_price!=null)
+            if($product_exist_id)
             {
-                $cart->price=$product->discount_price * $request->quantity;
+                $cart=cart::find($product_exist_id)->first;
+                $quantity=$cart->quantity;
+                $cart->quantity=$quantity + $request->quantity;
+                if($product->discount_price!=null)
+                {
+                    $cart->price=$product->discount_price *  $cart->quantity;
+                }
+                else
+                {
+                    $cart->price=$product->price *  $cart->quantity;
+                }
+                $cart->save();
+                return redirect()->back()->with('message','product added sucessfully');
+
             }
             else
             {
-                $cart->price=$product->price * $request->quantity;
+                $cart=new cart;
+                $cart->name=$user->name;
+                $cart->email=$user->email;
+                $cart->phone=$user->phone;
+                $cart->address=$user->address;
+                $cart->user_id=$user->id;
+
+                $cart->Product_title=$product->title;
+                if($product->discount_price!=null)
+                {
+                    $cart->price=$product->discount_price * $request->quantity;
+                }
+                else
+                {
+                    $cart->price=$product->price * $request->quantity;
+                }
+
+                $cart->image=$product->image;
+                $cart->Product_id=$product->id;
+                $cart->quantity=$request->quantity;
+
+                $cart->save();
+                return redirect()->back()->with('message','product added sucessfully');
             }
 
-            $cart->image=$product->image;
-            $cart->Product_id=$product->id;
-            $cart->quantity=$request->quantity;
-
-            $cart->save();
-            return redirect()->back();
         }
         else
         {
@@ -96,6 +147,8 @@ class HomeController extends Controller
             return redirect('login');
         }
     }
+
+
 
     public function remove_cart($id)
     {
@@ -142,8 +195,10 @@ class HomeController extends Controller
 
         }
 
-        return redirect()->back()-with('message','We received your order!! We will contact you soon');
+        return redirect()->back()->with('message', 'We received your order!! We will contact you soon');
+
     }
+
 
 
     public function stripe($totalprice)
@@ -206,5 +261,71 @@ class HomeController extends Controller
         return back();
     }
 
+
+    public function show_order()
+    {
+        if(Auth::id())
+        {
+            $user=Auth::user();
+            $userid=$user->id;
+            $order = Order::where('user_id', $userid)->get();
+            return view('home.order',compact('order'));
+        }
+        else
+        {
+            return redirect('login');
+        }
+    }
+
+    public function cancel_order($id)
+    {
+        $order=order::find($id);
+        $order->delivery_status='order canceled';
+        $order->save();
+        return redirect()->back();
+    }
+
+    public function product_search(Request $request)
+    {
+        $search_text=$request->search;
+        $product=product::where('title','LIKE','%$search_text%')->orWhere('catagory','LIKE','$search_text')->paginate(10);
+        return view('home.all_product',compact('product'));
+
+
+    }
+
+
+    public function search_product(Request $request)
+    {
+        $search_text=$request->search;
+        $product=product::where('title','LIKE','%$search_text%')->orWhere('catagory','LIKE','$search_text')->paginate(10);
+        return view('home.all_product',compact('product'));
+
+
+    }
+
+
+
+    public function product()
+    {
+        $product=product::paginate(10);
+
+        return view('home.all_product',compact('product'));
+
+
+    }
+
+
+
+    //secondhand (rproducts)
+
+    public function rproduct()
+    {
+        $rproduct=rproduct::paginate(10);
+
+        return view('home.all_product',compact('rproduct'));
+
+
+    }
 
 }

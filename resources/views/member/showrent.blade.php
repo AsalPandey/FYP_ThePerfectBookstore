@@ -93,7 +93,7 @@
 
     <!-- end slider section -->
 
-<!-- why section -->
+    <!-- why section -->
 
     @if(session()->has('message'))
         <div class="alert alert-success">
@@ -102,53 +102,66 @@
         </div>
     @endif
 
-<div class="center">
-    <h1 style="font-size: 36px; text-align: center; margin-top: 30px; margin-bottom: 30px; color: #008080; text-shadow: 2px 2px #f2f2f2;">This is Your Cart</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="th_deg">Product Title</th>
-            <th class="th_deg">Product Quantity</th>
-            <th class="th_deg">Price</th>
-            <th class="th_deg">Image</th>
-            <th class="th_deg">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php $totalprice=0; ?>
-        @forelse($cart as $cart)
-            <tr class="table-row">
-                <td>{{$cart->product_title}}</td>
-                <td>{{$cart->quantity}}</td>
-                <td>Rs{{$cart->price}}</td>
-                <td><img class="img_deg" src="/product/{{$cart->image}}"></td>
-                <td>
-                    <a class="btn btn-danger" onclick="return confirm('Are you sure to remove this product?')" href="{{url('remove_cart',$cart->id)}}">Remove Product</a>
-                </td>
-            </tr>
-                <?php $totalprice=$totalprice + $cart->price ?>
-        @empty
+    <div class="center">
+        <h1 style="font-size: 36px; text-align: center; margin-top: 30px; margin-bottom: 30px; color: #008080; text-shadow: 2px 2px #f2f2f2;">rent this product?</h1>
+        <table class="table">
+            <thead>
             <tr>
-                <td colspan="5">Cart is Empty</td>
+                <th class="th_deg">Product Title</th>
+                <th class="th_deg">Duration</th>
+                <th class="th_deg">Price</th>
+                <th class="th_deg">Return_date</th>
+                <th class="th_deg">Image</th>
+                <th class="th_deg">Note</th>
+                <th class="th_deg">Action</th>
+
             </tr>
-        @endforelse
-        </tbody>
-    </table>
-    <div>
-        <h1 class="total_deg">
-            Total Price: Rs{{$totalprice}}
-        </h1>
+            </thead>
+            <tbody>
+            <?php $totalprice=0; ?>
+            @forelse($rcart as $rcart)
+                <tr class="table-row">
+                    <td>{{$rcart->product_title}}</td>
+                    <td>{{$rcart->month}}month</td>
+                    <td>Rs{{$rcart->price}}</td>
+                    <td>{{$rcart->return_date}}</td>
+                    <td><img class="img_deg" src="/product/{{$rcart->image}}"></td>
+                    <td>fine would be 10rs a day.<br>
+                        if you return this late</td>
+                    <td>
+                        <a class="btn btn-danger" onclick="return confirm('Are you sure to remove this product?')" href="{{url('remove_rent',$rcart->id)}}">Remove Product</a>
+                    </td>
+
+                </tr>
+                    <?php $totalprice=$totalprice + $rcart->price ?>
+            @empty
+                <tr>
+                    <td colspan="5">Cart is Empty</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+        <div>
+            <h1 class="total_deg">
+                Total Price: Rs{{$totalprice}}
+            </h1>
+        </div>
+
+        <div>
+            <h1 style="font-size: 25px; padding-bottom: 25px;">Proceed To Order</h1>
+            <a href="{{url('cash_order')}}" class="btn btn-primary" style="background-image: linear-gradient(to right, #ff5f6d, #36d1dc, #ffdd40);">Cash on Delivery</a>
+{{--            pay using card feature disabled for now--}}
+{{--            <a href="{{url('rentstripe',$totalprice)}}" class="btn btn-danger">Pay using Card</a>--}}
+        </div>
+
+
+
+
+
+
+
+
     </div>
-
-    <div>
-        <h1 style="font-size: 25px; padding-bottom: 25px;">Proceed To Order</h1>
-        <a href="{{url('cash_order')}}" class="btn btn-danger">Cash on Delivery</a>
-        <a href="{{url('stripe',$totalprice)}}" class="btn btn-danger">Pay using Card</a>
-    </div>
-
-</div>
-
-
 </div>
 <!-- jQery -->
 <script src="home/js/jquery-3.4.1.min.js"></script>

@@ -97,10 +97,10 @@
                     </div>
                     <div class="detail-box">
                         <h5>
-                            Fast Delivery
+                            Low Price
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            Appealing for budget consious consumers or students
                         </p>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                             Free Shiping
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            Free shipping inside the kathmandu valley.(conditions applied)
                         </p>
                     </div>
                 </div>
@@ -236,7 +236,7 @@
                             Best Quality
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            Attractive offerings with excellent quality.
                         </p>
                     </div>
                 </div>

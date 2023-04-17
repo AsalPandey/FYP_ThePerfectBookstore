@@ -21,23 +21,19 @@
     <!-- responsive style -->
     <link href="home/css/responsive.css" rel="stylesheet" />
 
-    <style type="text/css">
-        .center{
+    <style>
+        .center {
             margin: auto;
             width: 70%;
-            text-align: center;
             padding: 30px;
-        }
-        .th_deg{
-            font-size: 20px;
-            font-weight: bold;
-            padding: 10px;
-            background-color: skyblue;
+            text-align: center;
         }
 
-        .img_deg{
-            height: 100px;
-            width: 180px;
+        .th_deg {
+            padding: 10px;
+            background-color: skyblue;
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .table {
@@ -66,6 +62,10 @@
             background-color: #f5f5f5;
         }
 
+        .table-row:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
         .btn {
             display: inline-block;
             font-size: 14px;
@@ -82,74 +82,80 @@
         .btn:hover {
             background-color: #c0392b;
         }
+
+        @media only screen and (max-width: 600px) {
+            .table {
+                font-size: 14px;
+            }
+            .table th,
+            .table td {
+                padding: 8px;
+            }
+        }
+
+        .table td:hover {
+            background-color: #f5f5f5;
+        }
+
+
+
     </style>
+
+
 </head>
 <body>
-<div class="hero_area">
-    <!-- header section strats -->
+<div>
+
     @include('home.header')
-    <!-- end header section -->
-    <!-- slider section -->
 
-    <!-- end slider section -->
+    <div class="center">
+        <div>
+            <h1 style="font-size: 36px; text-align: center; margin-top: 30px; margin-bottom: 30px; color: #008080; text-shadow: 2px 2px #f2f2f2;">This is Your Orders</h1>
 
-<!-- why section -->
 
-    @if(session()->has('message'))
-        <div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            {{session()->get('message')}}
-        </div>
-    @endif
-
-<div class="center">
-    <h1 style="font-size: 36px; text-align: center; margin-top: 30px; margin-bottom: 30px; color: #008080; text-shadow: 2px 2px #f2f2f2;">This is Your Cart</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="th_deg">Product Title</th>
-            <th class="th_deg">Product Quantity</th>
-            <th class="th_deg">Price</th>
-            <th class="th_deg">Image</th>
-            <th class="th_deg">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php $totalprice=0; ?>
-        @forelse($cart as $cart)
-            <tr class="table-row">
-                <td>{{$cart->product_title}}</td>
-                <td>{{$cart->quantity}}</td>
-                <td>Rs{{$cart->price}}</td>
-                <td><img class="img_deg" src="/product/{{$cart->image}}"></td>
-                <td>
-                    <a class="btn btn-danger" onclick="return confirm('Are you sure to remove this product?')" href="{{url('remove_cart',$cart->id)}}">Remove Product</a>
-                </td>
-            </tr>
-                <?php $totalprice=$totalprice + $cart->price ?>
-        @empty
+            <table class="table">
+            <thead>
             <tr>
-                <td colspan="5">Cart is Empty</td>
+                <th class="th_deg">Product Title</th>
+                <th class="th_deg">Quantity</th>
+                <th class="th_deg">Price</th>
+                <th class="th_deg">Payment Status</th>
+                <th class="th_deg">Delivery Status</th>
+                <th class="th_deg">Image</th>
+                <th class="th_deg">Cancel Order</th>
             </tr>
-        @endforelse
-        </tbody>
-    </table>
-    <div>
-        <h1 class="total_deg">
-            Total Price: Rs{{$totalprice}}
-        </h1>
+            </thead>
+            <tbody>
+            @forelse($order as $order)
+                <tr class="table-row">
+                    <td>{{$order->product_title}}</td>
+                    <td>{{$order->quantity}}</td>
+                    <td>{{$order->price}}</td>
+                    <td>{{$order->payment_status}}</td>
+                    <td>{{$order->delivery_status}}</td>
+                    <td><img height="100" width="180" src="product/{{$order->image}}"></td>
+                    <td>
+                        @if($order->delivery_status=='processing')
+                            <a onclick="return confirm('Are you sure you want to cancel this order?')" class="btn btn-danger" href="{{url('cancel_order',$order->id)}}">Cancel Order</a>
+                        @else
+                            <p style="color: blue">Not Allowed</p>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="16">No Data Found</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
     </div>
 
-    <div>
-        <h1 style="font-size: 25px; padding-bottom: 25px;">Proceed To Order</h1>
-        <a href="{{url('cash_order')}}" class="btn btn-danger">Cash on Delivery</a>
-        <a href="{{url('stripe',$totalprice)}}" class="btn btn-danger">Pay using Card</a>
-    </div>
+
 
 </div>
 
 
-</div>
 <!-- jQery -->
 <script src="home/js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
@@ -158,6 +164,5 @@
 <script src="home/js/bootstrap.js"></script>
 <!-- custom js -->
 <script src="home/js/custom.js"></script>
-
 </body>
 </html>
