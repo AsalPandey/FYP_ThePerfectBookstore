@@ -12,6 +12,9 @@ use App\Models\Order;
 use App\Models\Rproduct;
 use App\Models\Rent;
 use App\Models\Rcart;
+use App\Models\Rorder;
+use App\Models\Sell;
+use App\Models\Catagory;
 
 use Session;
 use Stripe;
@@ -34,6 +37,12 @@ class MemberController extends Controller
             return view('member.sell');
         }
     }
+
+    public function get_membership()
+    {
+        return view('home.getmembership');
+    }
+
     public function paymembership()
     {
         if(Auth::check() && Auth::user()->usertype == 0)
@@ -42,7 +51,7 @@ class MemberController extends Controller
         }
         else
         {
-            return view('member.userpage');
+            return view('home.userpage');
         }
     }
     public function postmembership(Request $request)
@@ -238,5 +247,66 @@ class MemberController extends Controller
         $rcart->delete();
         return redirect()->back();
     }
+
+    public function cash_rorder()
+    {
+        {
+            $user=Auth::user();
+            $userid=$user->id;
+//        which user is logged in
+//        dd($userid);
+            $data=rcart::where('user_id','=',$userid)->get();
+//        dd($data);
+            foreach($data as $data)
+            {
+                $rorder=new rorder;
+                $rorder->name=$data->name;
+                $rorder->email=$data->email;
+                $rorder->phone=$data->phone;
+                $rorder->address=$data->address;
+                $rorder->user_id=$data->user_id;
+                $rorder->product_title=$data->product_title;
+                $rorder->price=$data->price;
+                $rorder->month=$data->month;
+                $rorder->return_date=$data->return_date;
+                $rorder->image=$data->image;
+                $rorder->product_id=$data->Product_id;
+
+                $rorder->payment_status='cash on delivery';
+                $rorder->delivery_status='processing';
+
+                $rorder->save();
+
+                //deleting cart
+                //get specefic id
+                $rcart_id=$data->id;
+                //find in cart
+                $rcart=rcart::find($rcart_id);
+                //delete the data
+                $rcart->delete();
+
+
+            }
+
+            return redirect()->back()->with('message', 'We received your Rent-Request!! We will contact you soon');
+
+        }
+    }
+
+
+    public function sell()
+    {
+        if(Auth::check() && Auth::user()->usertype == 0)
+        {
+            return view('home.getmembership');
+        }
+        else
+        {
+            $data = catagory::all();
+            return view('member.sell',compact('data'));
+        }
+    }
+
+//$data = Auth::user(); get user data
 
 }

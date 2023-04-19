@@ -142,8 +142,8 @@
 
     <div>
         <h1 style="font-size: 25px; padding-bottom: 25px;">Proceed To Order</h1>
-        <a href="{{url('cash_order')}}" class="btn btn-danger">Cash on Delivery</a>
-        <a href="{{url('stripe',$totalprice)}}" class="btn btn-danger">Pay using Card</a>
+        <a href="{{url('cash_order')}}" class="btn btn-primary" style="background-image: linear-gradient(to right, #ff5f6d, #36d1dc, #ffdd40);">Cash on Delivery</a>
+        <a href="{{url('stripe',$totalprice)}}" class="btn btn-primary" style="background-image: linear-gradient(to right, #ff5f6d, #36d1dc, #ffdd40);">Pay using Card</a>
     </div>
 
 </div>

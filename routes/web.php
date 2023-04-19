@@ -46,7 +46,9 @@ Route::middleware([
     route::get('/search',[AdminController::class,'searchdata']);
 
     route::get('/order',[AdminController::class,'order']);
+    route::get('/rent_order',[AdminController::class,'rent_order']);
     route::get('/delivered/{id}',[AdminController::class,'delivered']);
+    route::get('/rent_delivered/{id}',[AdminController::class,'rent_delivered']);
 
     //schools
     route::get('/view_schools',[AdminController::class,'view_schools']);
@@ -61,6 +63,8 @@ Route::middleware([
     route::get('/update_rproduct/{id}',[AdminController::class,'update_rproduct']);
     route::post('/update_rproduct_confirm/{id}',[AdminController::class,'update_rproduct_confirm']);
 
+    //sell
+    route::get('/sell_order',[AdminController::class,'sell_order']);
 
 
 
@@ -89,6 +93,7 @@ Route::middleware([
     route::get('/rproduct_details/{id}',[MemberController::class,'rproduct_details']);
     route::get('/rent/{id}',[MemberController::class,'rent']);
     route::get('/membership',[MemberController::class,'membership']);
+    route::get('/get_membership',[MemberController::class,'get_membership']);
     route::post('/paymembership',[MemberController::class,'paymembership']);
     route::post('postmembership', [MemberController::class, 'postmembership'])->name('postmembership');
     //display products for membership
@@ -104,7 +109,9 @@ Route::middleware([
 
     route::get('/show_rent',[MemberController::class,'show_rent']);
     route::get('/remove_rent/{id}',[MemberController::class,'remove_rent']);
+    route::get('/cash_rorder',[MemberController::class,'cash_rorder']);
 
+    route::get('/sell',[MemberController::class,'sell']);
 
 
 

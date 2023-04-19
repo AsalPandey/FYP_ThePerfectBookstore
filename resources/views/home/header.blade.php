@@ -30,8 +30,8 @@
                     <li class="nav-item {{ Request::is('show_order') ? 'active' : '' }}">
                         <a class="nav-link" href="{{url('show_order')}}"> Order</a>
                     </li>
-                    <li class="nav-item {{ Request::is('') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{url('')}}"> membership</a>
+                    <li class="nav-item {{ Request::is('get_membership') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{url('get_membership')}}"> membership</a>
                     </li>
                     <form class="form-inline">
                         <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">

@@ -62,7 +62,7 @@
                 @endif
 
 
-                <h2 class="font_size">All PRODUCTS</h2>
+                <h2 class="font_size">All Secondhand PRODUCTS</h2>
                 <table class="center">
                     <tr class="th_color">
                         <th class="th_deg">Product Title</th>

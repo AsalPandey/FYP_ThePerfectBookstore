@@ -8,6 +8,8 @@ use App\Models\Catagory;
 use App\Models\Order;
 use App\Models\Rproduct;
 use App\Models\School;
+use App\Models\Rorder;
+use App\Models\Sell;
 
 class AdminController extends Controller
 {
@@ -123,6 +125,35 @@ public function view_catagory()
 
     }
 
+    public function rent_order()
+    {
+        $rorder=rorder::all();
+
+
+        return view('admin.rorder',compact('rorder'));
+
+    }
+
+    public function rent_delivered($id)
+    {
+        $rorder=rorder::find($id);
+        $rorder->delivery_status="delivered";
+        $rorder->payment_status="paid";
+        $rorder->save();
+
+        return redirect()->back()->with('message','Product Delivered');
+
+    }
+
+    public function rent_searchdata(Request $request)
+    {
+        $searchText=$request->search;
+        $order=order::where('name','LIKE',"%$searchText%")->orWhere('phone','LIKE',"%$searchText%")->orWhere('product_title','LIKE',"%$searchText%")->get();
+        return view('admin.order',compact('order'));
+
+
+    }
+
 
     public function delivered($id)
     {
@@ -228,6 +259,10 @@ public function view_catagory()
         return view('admin.update_rproduct',compact('rproduct','catagory','school'));
 
     }
+
+
+
+
     public function update_rproduct_confirm(Request $request,$id)
     {
         $rproduct=rproduct::find($id);
@@ -255,7 +290,17 @@ public function view_catagory()
 
         return redirect()->back()->with('message','Product Updated Sucessfully');
 
+
     }
+
+
+    public function sell_order()
+    {
+        $order=order::all();
+        return view('admin.sell_order',compact('order'));
+
+    }
+
 
 
 }
